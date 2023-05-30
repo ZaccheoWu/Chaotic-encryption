@@ -3,53 +3,12 @@
 %date: 2023/01/30
 %Version: final version
 %Other notes: None
-function x=dediffusion0(I,C)
-hh=hash(C,"MD5");
-sum=0;
-[h,w,~]=size(I);
-H=h;W=w;
-for i=1:4
-    sum=hh(4.*i)+sum;
-end
-a1=mod(sum,100);
-sum=0;
-for i=1:4
-    sum=hh(4.*i-1)+sum;
-end
-b1=mod(sum,100);
-sum=0;
-for i=1:4
-    sum=hh(4.*i-2)+sum;
-end
-a2=mod(sum,100);
-sum=0;
-for i=1:4
-    sum=hh(4.*i-3)+sum;
-end
-b2=mod(sum,100);
-x1(1) = 0.1;
-y1(1) = 0.1;
-r = 2000;%舍弃次数
-for i=2:r+(h*w)
-     x1(i)=sin((a1.*pi.^2)./(x1(i-1).*y1(i-1)));
-     y1(i)=sin(b1.*pi.^2.*x1(i-1).*(1-y1(i-1))); 
-end
-% s1=mod(floor(x1(1,r+1:r+(h*w)).*10^15),256);
-% s2=mod(floor(y1(1,r+1:r+(h*w)).*10^15),256);
-x1=x1(1,r+1:r+(h*w));
-y1=y1(1,r+1:r+(h*w));
-%%
-x2(1) = 0.1;
-y2(1) = 0.1;
-r = 2000;%舍弃次数
-for i=2:r+(h*w)
-     x2(i)=sin((a2.*pi.^2)./(x2(i-1).*y2(i-1)));
-     y2(i)=sin(b2.*pi.^2.*x2(i-1).*(1-y2(i-1))); 
-end
-% s3=mod(floor(x2(1,r+1:r+(h*w)).*10^15),256);
-% s4=mod(floor(y2(1,r+1:r+(h*w)).*10^15),256);
-x2=x2(1,r+1:r+(h*w));
-y2=y2(1,r+1:r+(h*w));
+function x=dediffusion0(I,s5)
+[H,W]=size(I);
+x1=s5(1,1:H*W);
+x2=s5(1,H*W+1:2*H*W);
+y1=s5(1,2*H*W+1:3*H*W);
+y2=s5(1,3*H*W+1:4*H*W);
 %%
 R1=mod(floor(x1*(10^32-1)),255);
 R2=mod(floor(x2*(10^32-1)),255);
